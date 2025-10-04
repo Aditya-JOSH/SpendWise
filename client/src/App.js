@@ -1,13 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect } from 'react';
 import ThemeToggle from './components/ThemeToggle';
 
 function App() {
-
-  useEffect(() => {
-    document.documentElement.classList.remove('theme-loading');
-  })
 
   return (
   <div className="App theme-transition">

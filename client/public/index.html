@@ -34,8 +34,8 @@
         document.write(
           '<style>' +
           '.theme-loading html, .theme-loading body, .theme-loading #root {' +
-          'background-color: ' + bgColor + ';' +
-          'color: ' + textColor + ';' +
+          'background-color: ' + bgColor + '!important;' +
+          'color: ' + textColor + '!important;' +
           'margin: 0;' +
           'padding: 0;' +
           'transition: none !important;' + // Only disable transitions during load
@@ -44,6 +44,7 @@
         );
         
         document.documentElement.setAttribute('data-theme', initialTheme);
+        document.documentElement.classList.add('theme-loading');
       })();
     </script>
     <!--
