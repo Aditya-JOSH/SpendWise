@@ -24,6 +24,32 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <script>
+      (function() {
+        var savedTheme = localStorage.getItem('theme');
+        var initialTheme = savedTheme || 'dark';
+        var bgColor = initialTheme === 'light' ? '#fdf6e3' : '#282c34';
+        var textColor = initialTheme === 'light' ? '#000000' : '#ffffff';
+        
+        document.write(
+          '<style>' +
+          '.theme-loading html, .theme-loading body, .theme-loading #root {' +
+          'background-color: ' + bgColor + ';' +
+          'color: ' + textColor + ';' +
+          'margin: 0;' +
+          'padding: 0;' +
+          'transition: none !important;' + // Only disable transitions during load
+          '}' +
+          '</style>'
+        );
+        
+        document.documentElement.setAttribute('data-theme', initialTheme);
+      })();
+    </script>
+    <!--
+      Script above sets theme before any content renders to mitigate a flash
+      of white on page reload.
+    -->
     <title>React App</title>
   </head>
   <body>
