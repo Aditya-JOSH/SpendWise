@@ -1,8 +1,18 @@
-# SpendWise
+# SpendWise 
 
-A comprehensive personal finance management application that helps users track their expenses, create budgets, and manage financial goals. Built with Ruby on Rails API backend and React frontend.
+A comprehensive personal finance management application that empowers users to take control of their finance health through intelligent expense tracking, budget management, and goal setting.
 
-## 🚀 Features
+![SpendWise](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Ruby](https://img.shields.io/badge/ruby-2.7.4-red.svg)
+![Rails](https://img.shields.io/badge/rails-6.1.3-red.svg)
+![React](https://img.shields.io/badge/react-18.0+-blue.svg)
+
+## 🎯 Project Overview
+
+SpendWise is a modern, full-stack personal finance application designed to help individuals manage their money effectively. Built with a Ruby on Rails API backend and a React frontend, it provides a seamless experience for tracking expenses, managing budgets, and achieving financial goals.
+
+  ## 🚀 Features
 
 ### Budget Management
 - **Create and manage budgets** for different financial goals
@@ -47,67 +57,98 @@ A comprehensive personal finance management application that helps users track t
 - **Spring** - Application preloader
 - **Bootsnap** - Fast boot times
 
-## 📦 Installation & Setup
+## 🏗️ Architecture
+
+SpendWise follows a modern client-server architecture:
+
+```
+┌─────────────────────────────────────────────────┐
+│                React Frontend                   │
+│          (Port 3001 - Development)              │
+│                                                 │
+│  - Component-based UI                           │
+│  - State Management                             │
+│  - API Integration                              │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   │ HTTP/JSON API
+                   │ JWT Authentication
+                   │
+┌──────────────────▼──────────────────────────────┐
+│           Rails API Backend                     │
+│          (Port 3000 - Development)              │
+│                                                 │
+│  - RESTful API Endpoints                        │
+│  - Business Logic                               │
+│  - Authentication & Authorization               │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   │ ActiveRecord ORM
+                   │
+┌──────────────────▼──────────────────────────────┐
+│              PostgreSQL Database                │
+│                                                 │
+│  - User Data                                    │
+│  - Budgets & Transactions                       │
+│  - Categories                                   │
+└─────────────────────────────────────────────────┘
+```
+
+**For detailed architecture documentation, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+
+## 🚀 Quick Start
 
 ### Prerequisites
+
 - Ruby 2.7.4
 - Rails 6.1.3+
 - PostgreSQL
 - Node.js & npm
 - Git
 
-### Clone the Repository
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Limeload/SpendWise.git
+   cd SpendWise
+   ```
+
+2. **Backend Setup**
+   ```bash
+   # Install dependencies
+   bundle install
+   
+   # Setup database
+   rails db:create
+   rails db:migrate
+   rails db:seed
+   
+   # Start Rails server
+   rails server
+   ```
+   The API will be available at `http://localhost:3000`
+
+3. **Frontend Setup**
+   ```bash
+   # Navigate to client directory
+   cd client
+   
+   # Install dependencies
+   npm install
+   
+   # Start React development server
+   npm start
+   ```
+   The frontend will be available at `http://localhost:3001`
+
+## 🧪 Testing
+
 ```bash
-git clone <repository-url>
-cd spendwise
-```
-
-### Backend Setup
-
-1. **Install Ruby dependencies:**
-```bash
-bundle install
-```
-
-2. **Setup database:**
-```bash
-rails db:create
-rails db:migrate
-rails db:seed
-```
-
-3. **Start the Rails server:**
-```bash
-rails server
-```
-The API will be available at `http://localhost:3000`
-
-### Frontend Setup
-
-1. **Navigate to client directory:**
-```bash
-cd client
-```
-
-2. **Install dependencies:**
-```bash
-npm install
-```
-
-3. **Start the React development server:**
-```bash
-npm start
-```
-The frontend will be available at `http://localhost:3000`
-
-## 🛠️ Development
-
-### Running Tests
-```bash
-# Run backend tests
+# Backend tests
 bundle exec rspec
 
-# Run frontend tests
+# Frontend tests
 cd client && npm test
 ```
 
@@ -135,80 +176,92 @@ rails db:reset
 ./bin/setup
 ```
 
-## 📡 API Endpoints
+## 📚 API Documentation
 
-### Authentication
-- `POST /login` - User login
-- `POST /signup` - User registration
-- `DELETE /logout` - User logout
+### Authentication Endpoints
 
-### Budgets
-- `GET /api/v1/budgets` - List user budgets
-- `POST /api/v1/budgets` - Create new budget
-- `GET /api/v1/budgets/:id` - Get specific budget
-- `PATCH /api/v1/budgets/:id` - Update budget
-- `DELETE /api/v1/budgets/:id` - Delete budget
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/login` | User authentication |
+| POST | `/signup` | User registration |
+| DELETE | `/logout` | User logout |
 
-### Transactions
-- `GET /api/v1/budgets/:budget_id/transactions` - List budget transactions
-- `POST /api/v1/budgets/:budget_id/transactions` - Create transaction
-- `GET /api/v1/budgets/:budget_id/transactions/:id` - Get specific transaction
-- `PATCH /api/v1/budgets/:budget_id/transactions/:id` - Update transaction
-- `DELETE /api/v1/budgets/:budget_id/transactions/:id` - Delete transaction
+### Budget Endpoints
 
-### Categories
-- `GET /api/v1/categories` - List all categories
-- `POST /api/v1/categories` - Create new category
-- `GET /api/v1/categories/:id` - Get specific category
-- `PATCH /api/v1/categories/:id` - Update category
-- `DELETE /api/v1/categories/:id` - Delete category
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/budgets` | List user budgets |
+| POST | `/api/v1/budgets` | Create new budget |
+| GET | `/api/v1/budgets/:id` | Get specific budget |
+| PATCH | `/api/v1/budgets/:id` | Update budget |
+| DELETE | `/api/v1/budgets/:id` | Delete budget |
 
-## 🏛️ Database Schema
+### Transaction Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/budgets/:budget_id/transactions` | List transactions |
+| POST | `/api/v1/budgets/:budget_id/transactions` | Create transaction |
+| GET | `/api/v1/budgets/:budget_id/transactions/:id` | Get transaction |
+| PATCH | `/api/v1/budgets/:budget_id/transactions/:id` | Update transaction |
+| DELETE | `/api/v1/budgets/:budget_id/transactions/:id` | Delete transaction |
+
+### Category Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/categories` | List categories |
+| POST | `/api/v1/categories` | Create category |
+| GET | `/api/v1/categories/:id` | Get category |
+| PATCH | `/api/v1/categories/:id` | Update category |
+| DELETE | `/api/v1/categories/:id` | Delete category |
+
+## 🗄️ Database Schema
 
 ### Users
-- `email` - User email (unique)
-- `encrypted_password` - Hashed password
+- `email` - Unique user email
+- `encrypted_password` - Securely hashed password
 - `name` - User's full name
-- `role` - User role
+- `role` - User role for authorization
 - `jti` - JWT token identifier
 
 ### Budgets
 - `name` - Budget name
 - `financial_goal` - Target amount
-- `user_id` - Owner reference
-
-### Categories
-- `name` - Category name (unique)
+- `user_id` - Foreign key to users
 
 ### Transactions
 - `amount` - Transaction amount
-- `description` - Transaction description
+- `description` - Transaction details
 - `date` - Transaction date
-- `budget_id` - Associated budget
-- `category_id` - Transaction category
+- `budget_id` - Foreign key to budgets
+- `category_id` - Foreign key to categories
 
-## 🔒 Security Features
+### Categories
+- `name` - Unique category name
 
-- **Password encryption** using bcrypt
-- **JWT-based authentication** for stateless sessions
-- **CORS configuration** for secure cross-origin requests
-- **Input validation** and sanitization
-- **User-specific data isolation**
+## 🔒 Security
 
-## 🚀 Deployment
+- Password encryption using bcrypt
+- JWT-based stateless authentication
+- CORS configuration for secure cross-origin requests
+- Input validation and sanitization
+- User-specific data isolation
+- Role-based access control
 
-The application is configured for deployment with:
-- **Render.com** compatibility
-- **Production-ready configuration**
-- **Environment-specific settings**
+## 🌐 Deployment
 
 ### Environment Variables
-Set the following environment variables for production:
-- `RAILS_MASTER_KEY` - Rails credentials key
-- `DATABASE_URL` - PostgreSQL connection string
-- `JWT_SECRET_KEY` - JWT secret for token signing
 
-## 📝 Contributing
+```bash
+RAILS_MASTER_KEY      # Rails credentials key
+DATABASE_URL          # PostgreSQL connection string
+JWT_SECRET_KEY        # JWT secret for token signing
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -217,28 +270,40 @@ Set the following environment variables for production:
 5. Open a Pull Request
 
 ### Development Guidelines
+
 - Follow Ruby style guide for backend code
 - Use ESLint/Prettier for frontend formatting
 - Write tests for new features
 - Update documentation for API changes
 
+## 📋 Project Status
+
+### Completed Features
+✅ User authentication and authorization  
+✅ Budget creation and management  
+✅ Transaction tracking  
+✅ Category management  
+✅ RESTful API design  
+✅ React frontend interface  
+
+### Roadmap
+-  **Dashboard analytics with spending insights**
+-  **Budget vs actual spending comparisons**
+-  **Recurring transaction support**
+-  **Export functionality for financial data**
+-  **Mobile app using React Native**
+-  **Multi-currency support**
+-  **Enhanced financial goal tracking and visualization**
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## 🤝 Support
+## 💬 Support
 
-If you have any questions or need help getting started, please:
-1. Check the documentation above
-2. Search existing issues
-3. Create a new issue with detailed information
+If you need help:
+- Check the [documentation](docs/)
+- Search [existing issues](https://github.com/Limeload/SpendWise/issues)
+- Create a [new issue](https://github.com/Limeload/SpendWise/issues/new) with detailed information
 
-## 🔮 Future Enhancements
-
-- **Dashboard analytics** with spending insights
-- **Budget vs actual** spending comparisons
-- **Recurring transaction** support
-- **Export functionality** for financial data
-- **Mobile app** using React Native
-- **Multi-currency** support
-- **Financial goal** tracking and visualization
+**Made with ❤️ for better financial management**
