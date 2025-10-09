@@ -96,6 +96,13 @@ GEM
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
     erubi (1.13.0)
+    factory_bot (6.4.5)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
+      railties (>= 5.0.0)
+    faker (3.4.2)
+      i18n (>= 1.8.11, < 2)
     ffi (1.17.0)
     ffi (1.17.0-x86_64-darwin)
     globalid (1.2.1)
@@ -107,6 +114,18 @@ GEM
       activesupport (>= 4.2)
     jwt (2.9.0)
       base64
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -239,7 +258,10 @@ DEPENDENCIES
   byebug
   devise
   devise-jwt
+  factory_bot_rails
+  faker
   jsonapi-serializer
+  kaminari (~> 1.2)
   listen (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)
