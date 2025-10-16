@@ -1,11 +1,7 @@
 class BudgetSerializer
   include JSONAPI::Serializer
-  attributes :id, :name, :financial_goal, :total_spent
-  
-  has_many :transactions
+  attributes :id, :name, :financial_goal, :created_at, :updated_at
 
-  # calculates the sum of all transactions for this budget. 
-  def total_spent
-    object.transactions.sum(:amount)
-  end
+  has_many :transactions
+  belongs_to :user
 end

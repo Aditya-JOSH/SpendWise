@@ -233,12 +233,13 @@ rails db:reset
 ### Transactions
 - `amount` - Transaction amount
 - `description` - Transaction details
-- `date` - Transaction date
+- `date` - Transaction datetime
 - `budget_id` - Foreign key to budgets
 - `category_id` - Foreign key to categories
 
 ### Categories
 - `name` - Unique category name
+- `user_id` - Foreign key to users
 
 ## 🔒 Security
 

@@ -1,7 +1,7 @@
 class Budget < ApplicationRecord
   belongs_to :user
-  has_many :transactions
+  has_many :transactions, dependent: :destroy
 
   validates :name, presence: true
-  validates :financial_goal, numericality: { greater_than_or_equal_to: 0 }
+  validates :financial_goal, presence: true, numericality: { greater_than: 0 }
 end

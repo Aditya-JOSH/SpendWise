@@ -1,10 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Budgets API", type: :request do
-  let!(:user) { User.create(name: "Test User", email: "test@example.com", password: "password") }
+  let(:user) { create(:user) }
   let!(:budgets) { user.budgets.create([{ name: "Monthly Budget", financial_goal: 1500 }, { name: "Vacation Fund", financial_goal: 2000 }]) }
   let(:budget_id) { budgets.first.id }
   let(:user_headers) { auth_headers(user) }
+
+  before do
+    sign_in user
+  end
+  
 
   describe "POST /api/v1/budgets" do
     let(:valid_attributes) { { budget: { name: "New Car Fund", financial_goal: 800 } } }
