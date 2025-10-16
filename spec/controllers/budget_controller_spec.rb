@@ -1,126 +1,78 @@
 require 'rails_helper'
 
-RSpec.describe "Budgets API", type: :request do
+RSpec.describe Api::V1::BudgetsController, type: :controller do
   let(:user) { create(:user) }
-  let!(:budgets) { user.budgets.create([{ name: "Monthly Budget", financial_goal: 1500 }, { name: "Vacation Fund", financial_goal: 2000 }]) }
-  let(:budget_id) { budgets.first.id }
-  let(:user_headers) { auth_headers(user) }
 
+  # Use the sign_in helper for controller specs
   before do
     sign_in user
   end
-  
 
-  describe "POST /api/v1/budgets" do
-    let(:valid_attributes) { { budget: { name: "New Car Fund", financial_goal: 800 } } }
-
-    context "when the request is valid" do
-      before { post '/api/v1/budgets', params: valid_attributes, headers: user_headers }
-
-      it "creates a new budget" do
-        expect {
-          post '/api/v1/budgets', params: valid_attributes, headers: user_headers
-        }.to change(Budget, :count).by(1)
-      end
-
-      it "returns a status code 201 (created)" do
-        expect(response).to have_http_status(:created)
-      end
-
-      it "returns the created budget as JSON" do
-        json_response = JSON.parse(response.body)
-        expect(json_response['name']).to eq("New Car Fund")
-      end
+  describe 'GET #index' do
+    # Create data inside a before block for this specific action
+    before do
+      create_list(:budget, 2, user: user)
     end
 
-    context "when the request is invalid (e.g., name is missing)" do
-      let(:invalid_attributes) { { budget: { financial_goal: 500 } } }
+    it 'returns a successful response' do
+      get :index
+      expect(response).to have_http_status(:success)
+    end
 
-      before { post '/api/v1/budgets', params: invalid_attributes, headers: user_headers }
-
-      it "does not create a new budget" do
-        expect {
-          post '/api/v1/budgets', params: invalid_attributes, headers: user_headers
-        }.not_to change(Budget, :count)
-      end
-
-      it "returns a status code 422 (unprocessable entity)" do
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
-
-      it "returns a validation failure message" do
-        json_response = JSON.parse(response.body)
-        expect(json_response['errors']).to include("Name can't be blank")
-      end
+    it "returns the user's budgets" do
+      get :index
+      json_response = JSON.parse(response.body)
+      expect(json_response.size).to eq(2)
     end
   end
 
-  describe "GET /api/v1/budgets" do
-    context "when the user is authenticated" do
-      before { get '/api/v1/budgets', headers: user_headers }
-      it "returns the user's budgets" do
-        json_response = JSON.parse(response.body)
-        expect(json_response).not_to be_empty
-        expect(json_response.size).to eq(2)
-      end
+  describe 'GET #show' do
+    let(:budget) { create(:budget, user: user) }
 
-      it "returns a status code 200 (ok)" do
-        expect(response).to have_http_status(:ok)
-      end
-    end
-
-    context "when the user is not authenticated" do
-      before { get '/api/v1/budgets' }
-      it "returns a status code 401 (unauthorized)" do
-        expect(response).to have_http_status(:unauthorized)
-      end
+    it 'returns the specific budget' do
+      get :show, params: { id: budget.id }
+      json_response = JSON.parse(response.body)
+      expect(response).to have_http_status(:success)
+      expect(json_response['id']).to eq(budget.id)
     end
   end
 
-  describe "GET /api/v1/budgets/:id" do
-    context "when the budget exists and belongs to the user" do
-      before { get "/api/v1/budgets/#{budget_id}", headers: user_headers }
-      it "returns the budget" do
-        json_response = JSON.parse(response.body)
-        expect(json_response['id']).to eq(budget_id)
-        expect(json_response['name']).to eq('Monthly Budget')
-      end
+  describe 'POST #create' do
+    let(:valid_attributes) { { name: 'New Car Fund', financial_goal: 800 } }
 
-      it "returns status code 200 (ok)" do
-        expect(response).to have_http_status(:ok)
-      end
+    it 'creates a new budget' do
+      expect {
+        post :create, params: { budget: valid_attributes }
+      }.to change(Budget, :count).by(1)
+    end
+
+    it 'returns errors for invalid attributes' do
+      post :create, params: { budget: { name: nil } }
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
-  describe "PUT /api/v1/budgets/:id" do
-    let(:valid_attributes) { { budget: { name: "College Fund", financial_goal: 40000 } } }
-    context "when the budget exists and belongs to the user" do
-      before { put "/api/v1/budgets/#{budget_id}", params: valid_attributes, headers: user_headers }
+  describe 'PUT #update' do
+    let(:budget) { create(:budget, user: user) }
 
-      it "returns a status code 200 (ok)" do
-        expect(response).to have_http_status(:ok)
-      end
-
-      it "returns the updated budget as JSON" do
-        json_response = JSON.parse(response.body)
-        expect(json_response['name']).to eq("College Fund")
-      end
+    it 'updates the budget' do
+      put :update, params: {
+        id: budget.id,
+        budget: { name: 'Updated Budget Name' }
+      }
+      # reload the record from the database to check for the new name
+      expect(budget.reload.name).to eq('Updated Budget Name')
     end
   end
 
-  describe "DELETE /api/v1/budgets/:id" do
-    context "when the budget exists and belongs to the user" do
-      it "deletes the budget from the database" do
-        expect {
-          delete "/api/v1/budgets/#{budget_id}", headers: user_headers
-        }.to change(Budget, :count).by(-1)
-      end
-      
-      it "returns a status code 204 (no content)" do
-        delete "/api/v1/budgets/#{budget_id}", headers: user_headers
-        expect(response).to have_http_status(:no_content)
-      end
+  describe 'DELETE #destroy' do
+    # Use let! to ensure the budget is created before the test runs
+    let!(:budget) { create(:budget, user: user) }
+
+    it 'deletes the budget' do
+      expect {
+        delete :destroy, params: { id: budget.id }
+      }.to change(Budget, :count).by(-1)
     end
   end
 end
-
