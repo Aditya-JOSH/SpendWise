@@ -57,4 +57,7 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Set a dummy secret key base for test environment
+  config.secret_key_base = 'test_secret_key_base_for_testing_only'
 end
