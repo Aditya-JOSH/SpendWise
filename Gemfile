@@ -34,6 +34,10 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
+  # Linting and code quality tools
+  gem 'rubocop', require: false
+  gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
 end
 
 group :development do
