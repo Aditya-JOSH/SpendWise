@@ -10,6 +10,13 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    # Skip CI for documentation-only changes
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE.md'
 jobs:
   test:
     runs-on: ubuntu-latest
