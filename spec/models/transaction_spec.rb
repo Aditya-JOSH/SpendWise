@@ -17,9 +17,15 @@ RSpec.describe Transaction, type: :model do
     let(:budget) { create(:budget) }
     let(:category) { create(:category) }
 
-    let!(:old_transaction) { create(:transaction, budget: budget, category: category, date: 1.day.ago.change(hour: 10)) }
-    let!(:today_transaction) { create(:transaction, budget: budget, category: category, date: Time.current.change(hour: 12)) }
-    let!(:future_transaction) { create(:transaction, budget: budget, category: category, date: 1.day.from_now.change(hour: 15)) }
+    let!(:old_transaction) {
+      create(:transaction, budget: budget, category: category, date: 1.day.ago.change(hour: 10))
+    }
+    let!(:today_transaction) {
+      create(:transaction, budget: budget, category: category, date: Time.current.change(hour: 12))
+    }
+    let!(:future_transaction) {
+      create(:transaction, budget: budget, category: category, date: 1.day.from_now.change(hour: 15))
+    }
 
     describe '.on_or_after' do
       it 'returns transactions on or after a specific datetime' do

@@ -1,9 +1,11 @@
 module RackSessionsFix
   extend ActiveSupport::Concern
+
   class FakeRackSession < Hash
     def enabled?
       false
     end
+
     def destroy; end
   end
   included do

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.4"
+ruby '2.7.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.2'
@@ -34,8 +34,9 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'bundler-audit', require: false
+  # Linting and code quality tools
   gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
   gem 'rubocop', require: false
 end
 
@@ -57,6 +58,6 @@ group :test do
   gem 'shoulda-matchers', '~> 4.0'
 end
 
-gem "active_model_serializers", "~> 0.10.12"
+gem 'active_model_serializers', '~> 0.10.12'
 
-gem "kaminari", "~> 1.2"
+gem 'kaminari', '~> 1.2'
