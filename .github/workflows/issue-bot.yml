@@ -37,7 +37,7 @@ jobs:
 
             - ⏰ **2-day timeline**: Aim to complete your work and submit a PR within **2 days** of assignment. If you need more time, please comment on this issue to discuss an extension.
 
-            - ✅ **CI checks must pass**: Before requesting a review, ensure your PR passes all automated checks (TypeScript, linting, build, security). You can see the status in the PR checks section.
+            - ✅ **CI checks must pass**: Before requesting a review, ensure your PR passes all automated checks (Ruby linting, tests, security audit). You can see the status in the PR checks section.
 
             **Need help?** Feel free to ask questions in the comments or reach out to maintainers.
 
@@ -74,10 +74,10 @@ jobs:
             2. ⏰ **Timeline reminder**: You have **2 days** from now to complete your work and submit a PR. The deadline is **${new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toLocaleDateString()}**.
 
             3. ✅ **Quality checks**: Before requesting a review, make sure your PR passes all automated checks:
-               - TypeScript compilation
-               - ESLint linting
+               - Ruby linting (RuboCop)
+               - Test suite (RSpec)
+               - Security audit (Brakeman, Bundler Audit)
                - Build verification
-               - Security audit
 
             4. 📝 **Communication**: If you encounter any blockers or need clarification, please comment on this issue. We're here to help!
 

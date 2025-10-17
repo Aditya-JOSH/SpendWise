@@ -1,6 +1,8 @@
-class Api::V1::BudgetsController < ApplicationController
-  before_action :authenticate_user!
-     before_action :set_budget, only: [:show, :update, :destroy]
+module Api
+  module V1
+    class BudgetsController < ApplicationController
+      before_action :authenticate_user!
+      before_action :set_budget, only: [:show, :update, :destroy]
 
       # GET /api/v1/budgets
       def index
@@ -41,14 +43,16 @@ class Api::V1::BudgetsController < ApplicationController
       private
 
       def set_budget
-       @budget = current_user.budgets.find(params[:id])
-      rescue ActiveRecord::RecordNotFound => error
-        render json: error.message, status: :unauthorized
+        @budget = current_user.budgets.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        render json: e.message, status: :unauthorized
       end
 
       # Strong params
       def budget_params
         params.require(:budget).permit(:name, :financial_goal, :user_id)
       end
+    end
+  end
 end
 
