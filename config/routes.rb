@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       end
 
       resources :categories, only: [:index, :create, :show, :update, :destroy]
+      resources :transactions, only: [:index, :destroy]
     end
   end
   # Routing logic: fallback requests for React Router.

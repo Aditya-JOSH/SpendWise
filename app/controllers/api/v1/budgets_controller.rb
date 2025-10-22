@@ -6,8 +6,21 @@ module Api
 
       # GET /api/v1/budgets
       def index
-        @budgets = current_user.budgets
-        render json: @budgets, status: :ok
+        per  = params.fetch(:per, 20)
+        page = params.fetch(:page, 1)
+
+        scoped = current_user.budgets
+        budgets = scoped.order(created_at: :desc).page(page).per(per)
+
+        render json: {
+          data: BudgetSerializer.new(budgets).serializable_hash[:data],
+          meta: {
+            page: budgets.current_page,
+            per: budgets.limit_value,
+            total_pages: budgets.total_pages,
+            total_count: budgets.total_count
+          }
+        }, status: :ok
       end
 
       # POST /api/v1/budgets
@@ -50,7 +63,7 @@ module Api
 
       # Strong params
       def budget_params
-        params.require(:budget).permit(:name, :financial_goal, :user_id)
+        params.require(:budget).permit(:name, :financial_goal)
       end
     end
   end
