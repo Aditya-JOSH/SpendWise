@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../services/api";
+import baseAuthApi from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      await api.post("/login", { user: { email, password } });
+      await baseAuthApi.post("/login", { user: { email, password } });
       alert("Login successful!");
       // Redirect or update UI here
     } catch (err) {

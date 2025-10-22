@@ -720,6 +720,16 @@
   color: var(--text-color);
 }
 
+.filter-group .date-range {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  height: 47px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
 .transactions-summary {
   display: flex;
   justify-content: space-between;

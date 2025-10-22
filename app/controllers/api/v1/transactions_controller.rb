@@ -2,22 +2,25 @@ module Api
   module V1
     class TransactionsController < ApplicationController
       before_action :authenticate_user!
-      before_action :set_budget
+      before_action :set_budget, if: -> { params[:budget_id].present? }
       before_action :set_transaction, only: [:show, :update, :destroy]
 
-      # GET /api/v1/budgets/:budget_id/transactions
+      # GET /api/v1/budgets/:budget_id/transactions or /api/v1/transactions
       def index
         per  = params.fetch(:per, 20)
         page = params.fetch(:page, 1)
         from = params[:from]
         to   = params[:to]
         category_id = params[:category_id]
+        scoped = @budget ? @budget.transactions.includes(:budget, :category) : Transaction.for_user(current_user)
 
-        scoped = @budget.transactions
-        scoped = scoped.on_or_after(from)
-        scoped = scoped.on_or_before(to)
-        scoped = scoped.for_category(category_id)
-        transactions = scoped.ordered_newest_first.page(page).per(per)
+        transactions = scoped
+                         .on_or_after(from)
+                         .on_or_before(to)
+                         .for_category(category_id)
+                         .ordered_newest_first
+                         .page(page)
+                         .per(per)  
 
         render json: {
           data: TransactionSerializer.new(transactions).serializable_hash[:data],
@@ -63,11 +66,18 @@ module Api
       private
 
       def set_budget
-        @budget = Budget.find(params[:budget_id])
+        @budget = current_user.budgets.find(params[:budget_id])
       end
 
       def set_transaction
-        @transaction = @budget.transactions.find(params[:id])
+        @transaction =
+          if @budget
+            @budget.transactions.find(params[:id])
+          else
+            Transaction.joins(:budget)
+                      .where(budgets: { user_id: current_user.id })
+                      .find(params[:id])
+          end
       end
 
       def transaction_params

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { api, baseAuthApi } from '../services/api'
 
 const AuthContext = createContext();
 
@@ -49,29 +50,28 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      // For now, we'll use mock authentication
-      // In production, this would be: const response = await authAPI.login(credentials);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock successful login
-      const userData = {
-        id: 1,
-        email: credentials.email,
-        name: 'John Doe',
-        role: 'user',
-        created_at: new Date().toISOString()
-      };
-      
-      const token = 'mock-jwt-token-' + Date.now();
-      
-      // Store auth data
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('authToken', token);
-      
-      setUser(userData);
-      return { success: true, user: userData };
+      // Call Rails Devise sessions endpoint
+      const res = await baseAuthApi.post('/login', { user: credentials });
+
+      // Extract token from Authorization header if present
+      const authHeader = res.headers?.authorization || res.headers?.Authorization;
+      const token = authHeader ? authHeader.split(' ').pop() : null;
+
+      // Extract user from response body (matches Users::SessionsController response)
+      const userData =
+        res.data?.status?.data?.user ||
+        res.data?.data?.attributes ||
+        null;
+
+      if (token) {
+        localStorage.setItem('authToken', token);
+      }
+      if (userData) {
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+      }
+
+      return { success: true, user: userData, token };
       
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';

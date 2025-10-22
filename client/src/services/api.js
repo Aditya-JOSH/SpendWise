@@ -6,6 +6,15 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true
+});
+
+export const baseAuthApi = axios.create({
+  baseURL: process.env.REACT_BASE_APP_API_URL || 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
 });
 
 // Add request interceptor to include auth token
@@ -64,11 +73,13 @@ export const categoriesAPI = {
 
 // Transactions API
 export const transactionsAPI = {
+  getWithoutBudget: (params = {}) => api.get('/transactions', { params }),
   getAll: (budgetId, params = {}) => api.get(`/budgets/${budgetId}/transactions`, { params }),
   getById: (budgetId, transactionId) => api.get(`/budgets/${budgetId}/transactions/${transactionId}`),
   create: (budgetId, transactionData) => api.post(`/budgets/${budgetId}/transactions`, transactionData),
   update: (budgetId, transactionId, transactionData) => 
     api.put(`/budgets/${budgetId}/transactions/${transactionId}`, transactionData),
+  deleteWithoutBudget: (transactionId) => api.delete(`/transactions/${transactionId}`),
   delete: (budgetId, transactionId) => api.delete(`/budgets/${budgetId}/transactions/${transactionId}`),
 };
 

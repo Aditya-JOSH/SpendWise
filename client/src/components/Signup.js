@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../services/api';
+import baseAuthApi from '../services/api';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -18,7 +18,7 @@ const Signup = () => {
       return;
     }
     try {
-      const res = await api.post('/signup', {
+      const res = await baseAuthApi.post('/signup', {
         user: { name, email, password, password_confirmation: passwordConfirmation }
       });
       setSuccess('Signup successful! You can now log in.');

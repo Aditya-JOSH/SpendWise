@@ -14,15 +14,17 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
       create_list(:budget, 2, user: user)
     end
 
-    it 'returns a successful response' do
+    it 'returns a successful response with data and meta' do
       get :index
       expect(response).to have_http_status(:success)
-    end
 
-    it "returns the user's budgets" do
-      get :index
-      json_response = JSON.parse(response.body)
-      expect(json_response.size).to eq(2)
+      json = JSON.parse(response.body)
+      expect(json).to have_key('data')
+      expect(json['data']).to be_an(Array)
+      expect(json['data'].length).to eq(2)
+
+      expect(json).to have_key('meta')
+      expect(json['meta']).to include('page', 'per', 'total_pages', 'total_count')
     end
   end
 
@@ -31,9 +33,11 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
 
     it 'returns the specific budget' do
       get :show, params: { id: budget.id }
-      json_response = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(json_response['id']).to eq(budget.id)
+
+      json = JSON.parse(response.body)
+      returned_id = json['id'] || json.dig('data', 'id')
+      expect(returned_id.to_s).to eq(budget.id.to_s)
     end
   end
 
@@ -44,11 +48,14 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
       expect {
         post :create, params: { budget: valid_attributes }
       }.to change(Budget, :count).by(1)
+      expect(response).to have_http_status(:created)
     end
 
     it 'returns errors for invalid attributes' do
       post :create, params: { budget: { name: nil } }
       expect(response).to have_http_status(:unprocessable_entity)
+      json = JSON.parse(response.body)
+      expect(json).to have_key('errors').or have_key('error').or have_key('message')
     end
   end
 
@@ -60,7 +67,7 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
         id: budget.id,
         budget: { name: 'Updated Budget Name' }
       }
-      # reload the record from the database to check for the new name
+      expect(response).to have_http_status(:success)
       expect(budget.reload.name).to eq('Updated Budget Name')
     end
   end
@@ -73,6 +80,7 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
       expect {
         delete :destroy, params: { id: budget.id }
       }.to change(Budget, :count).by(-1)
+      expect(response).to have_http_status(:no_content).or have_http_status(:success)
     end
   end
 end
