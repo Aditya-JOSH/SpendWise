@@ -41,7 +41,7 @@ module Api
       # PATCH/PUT /api/v1/budgets/:id
       def update
         if @budget.update(budget_params)
-          render json: @budget, status: :ok
+          render json: BudgetSerializer.new(@budget).serializable_hash[:data], status: :ok
         else
           render json: { errors: @budget.errors.full_messages }, status: :unprocessable_entity
         end
