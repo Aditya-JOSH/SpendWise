@@ -41,7 +41,11 @@ const TransactionForm = ({ budgets, categories, onSubmit, editingTransaction, on
               type="number"
               step="0.01"
               min="0"
-              {...register('amount', { required: 'Amount is required', min: { value: 0.01, message: 'Amount must be greater than 0' } })}
+              {...register('amount', { 
+                required: 'Amount is required', 
+                min: { value: 0.01, message: 'Amount must be greater than 0' }, 
+                max: { value: 1000000, message: 'Amount must not be greater than 1,000,000' }, 
+              })}
               placeholder="0.00"
             />
             {errors.amount && <span className="error">{errors.amount.message}</span>}
@@ -55,18 +59,20 @@ const TransactionForm = ({ budgets, categories, onSubmit, editingTransaction, on
             {errors.date && <span className="error">{errors.date.message}</span>}
           </div>
 
-          <div className="form-group">
-            <label>Budget</label>
-            <select {...register('budget_id', { required: 'Budget is required' })}>
-              <option value="">Select a budget</option>
-              {budgets.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.attributes?.name || b.name}
-                </option>
-              ))}
-            </select>
-            {errors.budget_id && <span className="error">{errors.budget_id.message}</span>}
-          </div>
+          {!editingTransaction && (
+            <div className="form-group">
+              <label>Budget</label>
+              <select {...register('budget_id', { required: 'Budget is required' })}>
+                <option value="">Select a budget</option>
+                {budgets.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.attributes?.name || b.name}
+                  </option>
+                ))}
+              </select>
+              {errors.budget_id && <span className="error">{errors.budget_id.message}</span>}
+            </div>
+          )}
 
           <div className="form-group">
             <label>Category</label>

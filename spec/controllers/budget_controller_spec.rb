@@ -9,7 +9,6 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
   end
 
   describe 'GET #index' do
-    # Create data inside a before block for this specific action
     before do
       create_list(:budget, 2, user: user)
     end
@@ -62,13 +61,25 @@ RSpec.describe Api::V1::BudgetsController, type: :controller do
   describe 'PUT #update' do
     let(:budget) { create(:budget, user: user) }
 
-    it 'updates the budget' do
+    it 'updates the budget and returns serialized data' do
       put :update, params: {
         id: budget.id,
         budget: { name: 'Updated Budget Name' }
       }
-      expect(response).to have_http_status(:success)
+
+      expect(response).to have_http_status(:ok)
+
       expect(budget.reload.name).to eq('Updated Budget Name')
+
+      json = JSON.parse(response.body)
+
+      expect(json).to have_key('id').or have_key('data')
+      if json.key?('data')
+        expect(json['data']['id'].to_s).to eq(budget.id.to_s)
+        expect(json['data']['attributes']['name']).to eq('Updated Budget Name')
+      else
+        expect(json['id'].to_s).to eq(budget.id.to_s)
+      end
     end
   end
 
