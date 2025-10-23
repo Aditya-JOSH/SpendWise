@@ -4,7 +4,7 @@ import './App.css';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
-import Budgets from './components/Budgets';
+import Budgets from './components/Budgets/Budgets';
 import Transactions from './components/Transactions/Transactions';
 import Categories from './components/Categories';
 import Analytics from './components/Analytics';
