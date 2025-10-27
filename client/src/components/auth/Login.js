@@ -21,10 +21,6 @@ const Login = () => {
     if (isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
-  useEffect(() => {
-    clearError();
-  }, [clearError]);
-
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     const result = await login(data);
