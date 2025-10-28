@@ -187,7 +187,7 @@ code {
 
 .input-group input {
   width: 100%;
-  padding: 1rem 3rem 1rem 3rem; /* extra right padding for toggle */
+  padding: 1rem 0rem 1rem 3rem!important; /* extra right padding for toggle */
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   background-color: var(--input-bg);
@@ -216,7 +216,7 @@ code {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 0.25rem;
   transition: color 0.2s ease;
 }
@@ -262,6 +262,9 @@ code {
   border-radius: 0.5rem;
   font-size: 0.875rem;
   margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .auth-footer {

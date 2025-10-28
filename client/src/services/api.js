@@ -9,7 +9,7 @@ const api = axios.create({
   withCredentials: true
 });
 
-export const baseAuthApi = axios.create({
+const baseAuthApi = axios.create({
   baseURL: process.env.REACT_BASE_APP_API_URL || 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
@@ -47,10 +47,15 @@ api.interceptors.response.use(
 
 // Auth API
 export const authAPI = {
-  login: (credentials) => api.post('/auth/login', credentials),
-  register: (userData) => api.post('/auth/register', userData),
-  logout: () => api.post('/auth/logout'),
-  refreshToken: () => api.post('/auth/refresh'),
+  login: (credentials) => baseAuthApi.post('/login', credentials),
+  register: (userData) => baseAuthApi.post('/signup', userData),
+  logout: () => baseAuthApi.delete('/logout', {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  }),
+  refreshToken: () => baseAuthApi.post('/refresh'),
+  memberInfo: () => baseAuthApi.get('/member_details'),
 };
 
 // Budgets API

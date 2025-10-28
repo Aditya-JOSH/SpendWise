@@ -22,10 +22,6 @@ const Signup = () => {
     if (isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
-  useEffect(() => {
-    clearError();
-  }, [clearError]);
-
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     const result = await registerUser({
@@ -116,7 +112,13 @@ const Signup = () => {
                 id="password"
                 {...register('password', { 
                   required: 'Password is required',
-                  minLength: { value: 6, message: 'Password must be at least 6 characters' }
+                  minLength: { 
+                    value: 6, 
+                    message: 'Password must be at least 6 characters'
+                  },
+                  validate: value =>
+                     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>?/`~\\|])[A-Za-z\d!@#$%^&*()_\-+=\[\]{};:'",.<>?/`~\\|]{6,}$/.test(value)
+                      || 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character'
                 })}
                 placeholder="Create a password"
                 autoComplete="new-password"
