@@ -12,6 +12,7 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import UserGuide from './components/UserGuide';
 
 function App() {
   return (
@@ -60,6 +61,14 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Analytics />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/user-guide" element={
+            <ProtectedRoute>
+              <Layout>
+                <UserGuide />
               </Layout>
             </ProtectedRoute>
           } />
