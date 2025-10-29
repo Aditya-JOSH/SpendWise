@@ -102,6 +102,14 @@ const Layout = ({ children }) => {
 
         <div className="sidebar-footer">
           <ThemeToggle />
+          <Link
+            key='userGuide'
+            to='/user-guide'
+            className='nav-item'
+            onClick={() => setSidebarOpen(false)}
+          >
+            <span>Docs</span>
+          </Link>
         </div>
       </div>
 

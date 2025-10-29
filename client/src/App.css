@@ -118,6 +118,9 @@
 .sidebar-footer {
   padding: 1.5rem;
   border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Main Content */
@@ -781,6 +784,16 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto;
+}
+
+.user-guide {
+  color: var(--text-color);
+}
+
+.blue-link {
+  color: var(--primary-color);
+  text-decoration: underline;
+  margin-left: 4px;
 }
 
 @keyframes spin {
